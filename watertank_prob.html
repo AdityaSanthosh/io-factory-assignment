@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Water Tank Problem</title>
+        <meta charset="UTF-8">
+        <style>
+            .tank-table { border-spacing: 0; border-collapse: collapse; }
+            .tank-table td { border: 1px solid; width: 4em; height: 2em; }
+        </style>
+    </head>
+    <body>
+      <div style="padding: 5rem 5rem 5rem 5rem;">
+      <h1>Water Tank Problem</h1>
+      <div>
+        <label for="_input">Enter the Units</label><br><br>
+        <textarea id="_input"></textarea><br><br>
+        <button onclick="buildTank()">Submit</button>
+      </div>
+      <br>
+      <div>
+        <table class="tank-table">
+            <tbody>
+            </tbody>
+        </table>
+      </div>
+        <br>
+      <div>
+        <label for="waterunits">Total Volume of Water:</label>
+        <output id="waterunits"></output>
+      </div>
+      </div>
+        <script>
+          function buildTank() {
+            const tankTable = document.querySelector('table');
+            tankTable.innerHTML = '';
+            const inputvals = document.getElementById("_input").value;
+            const inputarr = inputvals.trim().replace(/(^,)|(,$)/g, "").split(",").map(i=>Number(i));
+            const tankLength = inputarr.length;
+            const maxheight = Math.max(...inputarr)+1;
+            var outputunits = 0;
+            var finalheightindex = 0;
+            for(let i=0;i<maxheight;i++) {
+              const newRow = tankTable.insertRow();
+              for(let j=0;j<tankLength;j++) {
+                newRow.insertCell();
+              }
+            }
+            const rows = document.getElementsByTagName("tr");
+            for(let i=inputarr.length-1;i>=0;i--) { 
+              if(inputarr[i]!==0) {
+                finalheightindex = i;
+                break;
+              }
+            }
+            let prevheight = 0;
+            for(let i=0;i<tankLength;i++) {
+              if(inputarr[i]!=0) {
+                for(let j=rows.length-1;j>=rows.length - inputarr[i];j--) {
+                  rows[j].getElementsByTagName("td")[i].style.background = "yellow";
+                  prevheight = inputarr[i];
+                }
+              }
+              if(i<finalheightindex && inputarr[i]==0) {
+                for(let j=rows.length-1;j>=rows.length-prevheight;j--) {
+                  rows[j].getElementsByTagName("td")[i].style.background = "blue";
+                  outputunits++;
+                }
+              }
+            }
+            alert(`Total Volume of to store the water ${outputunits}`);
+            document.getElementById("waterunits").value = outputunits;
+          }
+        </script>
+    </body>
+</html>
